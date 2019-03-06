@@ -3,6 +3,7 @@ const morgan        = require('morgan');
 // const cors          = require('cors');
 const bodyParser    = require("body-parser");
 const index         = require("./routes/index.js");
+const user         = require("./routes/user.js");
 
 const app = express();
 
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use('/', index);
+app.use('/user', user);
 
 
 // Add routes for 404 and error handling
