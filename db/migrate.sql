@@ -1,14 +1,15 @@
 -- User account template
 -- DROP TABLES
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS `user`;
 
-CREATE TABLE IF NOT EXISTS user (
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(60) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE IF NOT EXISTS `user` (
+    `username` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(60) NOT NULL,
+    `balance` INT DEFAULT 100,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE(email)
+    UNIQUE(`username`)
 );
 
-DELETE FROM user;
-INSERT INTO user (email, password) VALUES ("test", "test2");
+DELETE FROM `user`;
+INSERT INTO `user` (`username`, `password`) VALUES ("test", "test2");

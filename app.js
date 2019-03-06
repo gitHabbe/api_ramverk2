@@ -4,6 +4,7 @@ const morgan        = require('morgan');
 const bodyParser    = require("body-parser");
 const index         = require("./routes/index.js");
 const user         = require("./routes/user.js");
+const userTools = require("./src/user.js");
 
 const app = express();
 
