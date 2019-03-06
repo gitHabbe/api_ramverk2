@@ -1,6 +1,6 @@
 const express       = require("express");
 const morgan        = require('morgan');
-// const cors          = require('cors');
+const cors          = require('cors');
 const bodyParser    = require("body-parser");
 const index         = require("./routes/index.js");
 const user         = require("./routes/user.js");
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded(
     { extended: true }
 )); // for parsing application/x-www-form-urlencoded
 
-// app.use(cors());
+app.use(cors());
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {

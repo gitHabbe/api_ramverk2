@@ -25,5 +25,6 @@ const checkToken = (req, res, next) => {
 }
 
 module.exports = {
-    getQuery
+    getQuery,
+    checkToken
 };
