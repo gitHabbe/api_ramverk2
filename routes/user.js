@@ -8,30 +8,21 @@ const jwt       = require('jsonwebtoken');
 
 router.post("/register", async (req, res) => {
     const { username, password, password2 } = req.body;
+    let sql, user;
 
     if (password !== password2) {
         return res.sendStatus(422)
     }
-    const sql = "SELECT * FROM user WHERE username = ?;";
-    const user = await userTools.getQuery(db, sql, [username]);
+    sql = "SELECT * FROM user WHERE username = ?;";
+    user = await userTools.getQuery(db, sql, [username]);
 
     if (user) {
         return res.sendStatus(409);
     }
 
-
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    db.run(
-        "INSERT INTO user (username, password) VALUES (?, ?)",
-        [ username, hashedPassword ],
-        err => {
-            if (err) {
-                console.log('​err', err)
-            } else {
-                console.log("user created");
-            }
-    });
+    sql = "INSERT INTO user (username, password) VALUES (?, ?);";
+    user = await userTools.runQuery(db, sql, [username, hashedPassword]); 
     
     return res.sendStatus(201);
 });
@@ -49,12 +40,17 @@ router.post("/login", async (req, res) => {
     }
     const payload = { "username": username };
     const secret = process.env.JWT_SECRET;
-    const token = jwt.sign(payload, secret, { expiresIn: '1m'});
+    const token = jwt.sign(payload, secret, { expiresIn: '1h'});
     // res.userInfo = { "username": username, "token": token };
     
-    return res.status(200).send({token, user: user});
+    return res.status(200).send({ token, user });
 
 });
 
+router.post("/token", async (req, res) => {
+    const { token } = req.body;
+    const test = await userTools.verifyToken(jwt, token);
+    return res.status(200).send(test);
+});
 
 module.exports = router;

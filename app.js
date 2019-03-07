@@ -2,9 +2,10 @@ const express       = require("express");
 const morgan        = require('morgan');
 const cors          = require('cors');
 const bodyParser    = require("body-parser");
-const index         = require("./routes/index.js");
-const user         = require("./routes/user.js");
-const userTools = require("./src/user.js");
+const indexRoute         = require("./routes/index.js");
+const userRoute         = require("./routes/user.js");
+const figureRoute         = require("./routes/figure.js");
+const { checkToken } = require("./src/user.js");
 
 const app = express();
 
@@ -23,8 +24,9 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
 
-app.use('/', index);
-app.use('/user', user);
+app.use('/', indexRoute);
+app.use('/user', userRoute);
+app.use('/figure', checkToken, figureRoute);
 
 
 // Add routes for 404 and error handling
