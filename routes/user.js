@@ -31,6 +31,7 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     let sql = "SELECT * FROM user WHERE username = ?;";
     const user = await userTools.getQuery(db, sql, [username]);
+	console.log('TCL: user', user)
     if (!user) {
         return res.sendStatus(404);
     }
@@ -38,13 +39,12 @@ router.post("/login", async (req, res) => {
     if (!isCorrectPass) {
         return res.sendStatus(401);
     }
-    const payload = { "username": username };
+    const payload = { "username": user.username, "balance": user.balance };
     const secret = process.env.JWT_SECRET;
     const token = jwt.sign(payload, secret, { expiresIn: '1h'});
     // res.userInfo = { "username": username, "token": token };
     
     return res.status(200).send({ token, user });
-
 });
 
 router.post("/token", async (req, res) => {

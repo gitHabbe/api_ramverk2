@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use('/', indexRoute);
 app.use('/user', userRoute);
-app.use('/figure', checkToken, figureRoute);
+app.use('/figure', figureRoute);
 
 
 // Add routes for 404 and error handling
