@@ -3,11 +3,13 @@
 DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `figure`;
 DROP TABLE IF EXISTS `figure2user`;
+-- DROP TABLE IF EXISTS `bought_figure`;
+-- DROP TABLE IF EXISTS `figure2user`;
 
 CREATE TABLE IF NOT EXISTS `user` (
     `username` VARCHAR(255) NOT NULL,
     `password` VARCHAR(60) NOT NULL,
-    `balance` INT DEFAULT 100,
+    `balance` INT DEFAULT 500,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     UNIQUE(`username`)
@@ -24,12 +26,14 @@ CREATE TABLE IF NOT EXISTS `figure` (
 );
 
 CREATE TABLE IF NOT EXISTS `figure2user` (
+    `rowid`    INT,
     `figure_name` VARCHAR(100) NOT NULL,
     `user_username` VARCHAR(255) NOT NULL,
-    `amount`INT,
+    `count` INT NOT NULL,
+    `value` INT NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE(`figure_name`, `user_username`)
+    PRIMARY KEY (`rowid`)
 );
 
 DELETE FROM `user`;
@@ -37,16 +41,17 @@ INSERT INTO `user` (`username`, `password`) VALUES ("test", "test2");
 
 DELETE FROM `figure`;
 INSERT INTO `figure` (`name`, `value`, `rate`, `variance`) VALUES
-    ("Flash", 30, 1.004, 0.7),
-    ("Batman", 20, 1.008, 0.5)
+    ("Flash", 30, 1, 1.54),
+    ("Batman", 20, 1, 1.54)
 ;
 
 SELECT * FROM `figure`;
+-- DELETE FROM `figure2user`;
+SELECT * FROM `figure2user`;
 
-DELETE FROM `figure2user`;
--- INSERT INTO `figure2user` (`figure_name`, `user_username`, `amount`) VALUES
+-- INSERT INTO `figure2user` (`figure_name`, `user_username`, `count`) VALUES
 --     ("Flash", "test", 5),
 --     ("Batman", "test", 2)
 -- ;
 
-SELECT * FROM `figure2user`;
+-- SELECT * FROM `asdf`;

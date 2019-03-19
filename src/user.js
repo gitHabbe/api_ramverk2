@@ -33,6 +33,56 @@ const runQuery = (db, sql, params) => {
     });
 }
 
+const buyFigure = (db, params) => {
+    const [ value, username, count, figure ] = params;
+    return new Promise((resolve, reject) => {
+        let sql;
+        sql  = "UPDATE user ";
+        sql += "SET balance = balance - ? ";
+        sql += "WHERE username = ?;";
+		console.log('TCL: buyFigure -> sql', sql)
+        db.run(sql, [(value * count).toFixed(2), username], (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            sql  = "INSERT INTO figure2user ";
+            sql += "(figure_name, user_username, count, value) ";
+            sql += "VALUES (?, ?, ?, ?);";
+            db.run(sql, [figure, username, count, value.toFixed(2)], (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    });
+}
+
+const sellFigure = (db, params) => {
+    const [ value, username, count, figure ] = params;
+    return new Promise((resolve, reject) => {
+        let sql;
+        sql  = "UPDATE user ";
+        sql += "SET balance = balance + ? ";
+        sql += "WHERE username = ?;";
+		console.log('TCL: buyFigure -> sql', sql)
+        db.run(sql, [(value * count.toFixed(2)), username], (err, data) => {
+            if (err) {
+                reject(err);
+            }
+            sql  = "INSERT INTO figure2user ";
+            sql += "(figure_name, user_username, count, value) ";
+            sql += "VALUES (?, ?, ?, ?);";
+            db.run(sql, [figure, username, count, value.toFixed(2)], (err, data) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(data);
+            })
+        })
+    });
+}
+
 const checkToken = (req, res, next) => {
     const token = req.headers['x-access-token'] || req.headers['authorization'];
 	console.log('TCL: checkToken -> token', token);
@@ -43,7 +93,6 @@ const checkToken = (req, res, next) => {
         }
         res.token = token;
         res.user = decoded;
-        // res.json({'token': token, username: decoded.username});
         next();
     });
 }
@@ -58,10 +107,14 @@ const verifyToken = (jwt, token) => {
     });
 }
 
+
+
 module.exports = {
     getQuery,
     runQuery,
     checkToken,
+    buyFigure,
     verifyToken,
-    getAllQuery
+    getAllQuery,
+    sellFigure
 };

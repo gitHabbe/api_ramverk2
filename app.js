@@ -5,11 +5,10 @@ const bodyParser    = require("body-parser");
 const indexRoute         = require("./routes/index.js");
 const userRoute         = require("./routes/user.js");
 const figureRoute         = require("./routes/figure.js");
-const { checkToken } = require("./src/user.js");
 
 const app = express();
 
-const port = 8333;
+const port = 7333;
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded(
