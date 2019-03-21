@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `figure`;
 DROP TABLE IF EXISTS `figure2user`;
--- DROP TABLE IF EXISTS `bought_figure`;
+DROP TABLE IF EXISTS `tradeEvent`;
 -- DROP TABLE IF EXISTS `figure2user`;
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -30,7 +30,19 @@ CREATE TABLE IF NOT EXISTS `figure2user` (
     `figure_name` VARCHAR(100) NOT NULL,
     `user_username` VARCHAR(255) NOT NULL,
     `count` INT NOT NULL,
-    `value` INT NOT NULL,
+    -- `value` INT NOT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (`rowid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tradeEvent` (
+    `rowid` INT,
+    `figure_name` VARCHAR(100) NOT NULL,
+    `user_username` VARCHAR(255) NOT NULL,
+    `count` INT NOT NULL,
+    `value` FLOAT NOT NULL,
+    `tradeType` CHAR(4),
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (`rowid`)

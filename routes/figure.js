@@ -12,10 +12,4 @@ r.get("/figures", async (req, res) => {
     return res.status(200).send(figures);
 });
 
-// r.post("/buy", (req, res) => {
-//     console.log("res.user", res.user);
-
-//     res.sendStatus(200);
-// });
-
 module.exports = r;
