@@ -54,8 +54,12 @@ app.use((err, req, res, next) => {
     });
     // return res.sendStatus(400);
 });
-
-const server = app;
-// const server = app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+let server;
+if (process.env.NODE_ENV === 'test') {
+    server = app;
+}
+else {
+    server = app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+}
 
 module.exports = server;
