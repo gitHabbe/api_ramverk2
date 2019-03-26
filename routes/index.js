@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
         data: "test"
     };
 
-    return res.json(data).sendStatus(200);
+    return res.status(200).json(data);
 });
 
 module.exports = router;

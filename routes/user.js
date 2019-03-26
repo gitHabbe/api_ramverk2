@@ -10,8 +10,9 @@ const { checkToken } = require("../src/user.js");
 
 router.post("/register", async (req, res) => {
     const { username, password, password2 } = req.body;
+	console.log("TCL: username, password, password2", username, password, password2);
     let sql, user;
-
+    console.log("/REGISTER")
     if (password !== password2) {
         return res.sendStatus(422)
     }
@@ -45,14 +46,14 @@ router.post("/login", async (req, res) => {
     const payload = { "username": user.username, "balance": user.balance };
     const secret = process.env.JWT_SECRET;
     const token = jwt.sign(payload, secret, { expiresIn: '1h'});
-    // res.userInfo = { "username": username, "token": token };
-    
+
     return res.status(200).send({ token, user });
 });
 
 router.post("/token", async (req, res) => {
     const { token } = req.body;
     const test = await userTools.verifyToken(jwt, token);
+    console.log('test: ', test);
 
     return res.status(200).send(test);
 });
@@ -124,10 +125,36 @@ router.get("/purchases", checkToken, async (req, res) => {
 router.get("/figures", checkToken, async (req, res) => {
     let sql = `SELECT *, GROUP_CONCAT(count) FROM figure2user WHERE user_username = ? GROUP BY figure_name;`;
     const rows = await userTools.getAllQuery(db, sql, [res.user.username]);
-	console.log("TCL: res.user.username", res.user.username);
-	console.log("TCL: rows", rows);
-    console.log("res.user: ", res.user);
+
     return res.status(200).send({rows});
+});
+
+router.post("/deposit", checkToken, async (req, res) => {
+    const { user } = res;
+    const { amount } = req.body;
+	console.log("TCL: amount", amount);
+	console.log("TCL: user", user);
+    let sql = `UPDATE user SET balance = balance + ? WHERE username = ?;`;
+    const test = await userTools.runQuery(db, sql, [amount, user.username]);
+	console.log("TCL: test", test);
+
+    return res.sendStatus(200);
+});
+
+router.post("/withdraw", checkToken, async (req, res) => {
+    const { user } = res;
+    const { amount } = req.body;
+    let sql = `SELECT * FROM user WHERE username = ?;`;
+    const userRes = await userTools.getQuery(db, sql, [user.username]);
+    if (amount > userRes.balance) {
+        return res.sendStatus(400);
+    }
+	console.log("TCL: userRes", userRes);
+    sql = `UPDATE user SET balance = balance - ? WHERE username = ?;`;
+    const test = await userTools.runQuery(db, sql, [amount, user.username]);
+	console.log("TCL: test", test);
+
+    return res.sendStatus(200);
 });
 
 module.exports = router;

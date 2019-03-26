@@ -45,7 +45,6 @@ const buyFigure = (db, params) => {
             if (err) {
                 reject(err);
             }
-            console.log("TCL: buyFigure -> data", data);
             if (data) {
                 sql  = "UPDATE figure2user ";
                 sql += "SET count = count + ? ";

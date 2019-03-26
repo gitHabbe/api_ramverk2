@@ -48,10 +48,10 @@ CREATE TABLE IF NOT EXISTS `tradeEvent` (
     PRIMARY KEY (`rowid`)
 );
 
-DELETE FROM `user`;
+-- DELETE FROM `user`;
 INSERT INTO `user` (`username`, `password`) VALUES ("test", "test2");
 
-DELETE FROM `figure`;
+-- DELETE FROM `figure`;
 INSERT INTO `figure` (`name`, `value`, `rate`, `variance`) VALUES
     ("Flash", 30, 1, 1.54),
     ("Batman", 20, 1, 1.54)
